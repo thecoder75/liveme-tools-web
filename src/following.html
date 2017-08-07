@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Fans</title>
+
+		<link rel="stylesheet" href="style/style.min.css?v=1.0.1">
+
+		<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script>
+			function closeApp() {
+			    window.close()
+			}
+
+			function doFetch() {
+			    var e = window.location.href.split("?")[1].split("#");
+			    userID = e[0], max = e[1];
+
+			    $.ajax({
+			        url: "http://live.ksmobile.net/follow/getfollowinglistship",
+			        data: {
+			            page_size: ps,
+			            page_index: cp,
+			            access_token: userID
+			        },
+			        cache: !1,
+			        type: "GET",
+			        dataType: "json",
+			        success: function(e) {
+			            if (e.data.length > 0) {
+			                for (i = 0; i < e.data.length; i++) {
+			                    var t = '<div title="Click to search for user\'s videos." class="user_entry small clickable ' + (0 == e.data[i].sex ? "female" : "male") + '" onClick="getVideos(\'' + e.data[i].uid + '\')"><img class="avatar" src="' + e.data[i].face + '" onerror="this.src=\'images/blank.png\'"><h4>' + e.data[i].nickname + '</h4></div>';
+
+			                    if ($("#small_user_list").append(t), ct + i > max) break
+			                }
+			                ct += e.data.length;
+			                ct < max && setTimeout(function() {
+			                    cp++, doFetch()
+			                }, 50)
+			            }
+			        }
+			    })
+			}
+
+			function getVideos(e) {
+			    opener.remoteSearch('user-lookup',e)
+			}
+			var ps = 20,
+			    cp = 1,
+			    ct = 0,
+			    max = 0,
+			    userID = "";
+			$(function() {
+				$('#small_user_list').html('');
+			    setTimeout(function() {
+			        doFetch()
+			    }, 20)
+			});
+		</script>
+		<style>
+			#small_user_list { top: 0px; }
+		</style>
+		
+	</head>
+	<body>
+		<div id="small_user_list"></div>
+	</body>
+</html>

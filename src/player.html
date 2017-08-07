@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+	<head>
+
+		<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="javascript/hls.js"></script>
+
+		<style>
+			body { background-color: #000 !important; }
+			#video { background-color: #000 !important; top: 0; left: 0; width: 100%; height: 100%; }
+		</style>
+
+
+		<script>
+			$(function(){
+				setTimeout(function(){ playVideo(); }, 100);				
+			});
+			function playVideo(){
+				var u = window.location.href.split('#'), m3u8 = u[1].trim();
+				
+				var video = document.getElementById('video');
+				var hls = new Hls();
+				
+				hls.loadSource(m3u8);
+				hls.attachMedia(video);
+
+				hls.on(Hls.Events.MANIFEST_PARSED,function() {
+					video.play();
+				});
+			}
+			function closeApp() { window.close(); }
+		</script>
+
+        <link rel="stylesheet" href="style/style.css">
+
+	</head>
+	<body>
+		<video id="video" controls autoplay></video>
+	</body>
+</html>
