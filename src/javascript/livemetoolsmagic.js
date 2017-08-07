@@ -185,7 +185,10 @@ function _dolookup2() {
 
 function _dolookup3() {
 
-	if (query_orig.length < 1) return;
+	if (query_orig.length < 1) {
+		callback_holder(return_data);
+		return;
+	}
 
 	$.ajax({
 		url: 'http://live.ksmobile.net/live/queryinfo',
