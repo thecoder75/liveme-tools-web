@@ -133,24 +133,12 @@ function beginSearch2() {
 
 }
 
-
-function showUser(u) {
-	$('#type').val('user-lookup');
-	$('#query').val(u);
-	beginSearch2();
-}
-
 function showFollowing(u,m) {
 	window.open('following.html?'+u+'#'+m,'_followings_'+u,'width=360,height=640,resizable=no');
 }
 
 function showFans(u,m) {
 	window.open('fans.html?'+u+'#'+m,'_fans_'+u,'width=360,height=640,resizable=no');
-}
-
-
-function playVideo(u) {
-	window.open('player.html#'+u,'_player','width=400,height=640,resizable=yes');
 }
 
 function renderUserLookup(e) {
