@@ -14,7 +14,9 @@
 
 			function doFetch() {
 			    var e = window.location.href.split("?")[1].split("#");
-			    userID = e[0], max = e[1], $.ajax({
+			    userID = e[0], max = e[1];
+
+			    $.ajax({
 			        url: "http://live.ksmobile.net/follow/getFollowerListShip",
 			        data: {
 			            page_size: ps,
@@ -27,12 +29,14 @@
 			        success: function(e) {
 			            if (e.data.length > 0) {
 			                for (i = 0; i < e.data.length; i++) {
-			                    var t = '<div title="Click to search for user\'s videos." class="user_entry small clickable ' + (0 == e.data[i].sex ? "female" : "male") + '" onClick="getVideos(\'' + e.data[i].uid + '\')"><img class="avatar" src="' + e.data[i].face + '" onerror="this.src=\'images/blank.png\'"><h4>' + e.data[i].nickname + '</h4></div>';
-			                    if ($("#small_user_list").append(t), ct + i > max) break
+			                    var t = '<div class="user_entry small  ' + (0 == e.data[i].sex ? "female" : "male") + '"><img class="avatar" src="' + e.data[i].face + '" onerror="this.src=\'images/blank.png\'"><h4><span>' + e.data[i].uid + '</span> - ' + e.data[i].nickname + '</h4></div>';
+			                    $("#small_user_list").append(t);
 			                }
-			                ct += e.data.length, $("footer h5").html(ct + " entries loaded"), ct < max && setTimeout(function() {
-			                    cp++, doFetch()
+			                
+			                setTimeout(function() {
+			                    cp++; doFetch();
 			                }, 50)
+
 			            }
 			        }
 			    })

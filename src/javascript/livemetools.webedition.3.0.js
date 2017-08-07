@@ -16,7 +16,7 @@ var isSearching = false;
 
 $(function(){
 	setTimeout(function(){ onTypeChange(); }, 50);
-	window.onbeforeunload = function(e) { e.preventDefault();  return false; }; 
+	//window.onbeforeunload = function(e) { e.preventDefault();  return false; }; 
 });
 
 function enterOnSearch(e) { if (e.keyCode == 13) beginSearch(); } 
@@ -150,7 +150,7 @@ function showFans(u,m) {
 
 
 function playVideo(u) {
-	window.open('player.html#'+u,'_player','width=360,height=640,resizable=no');
+	window.open('player.html#'+u,'_player','width=400,height=640,resizable=yes');
 }
 
 function renderUserLookup(e) {
@@ -170,25 +170,27 @@ function renderUserLookup(e) {
 	if (e.userinfo.userid > 0) {
 		var u = e.userinfo;
 		userID = u.userid;
-
-		var h=	'<img src="'+u.usericon+'" class="avatar"><br><h3 class="name">'+u.username+'</h3><label>User ID:</label><input type="text" value="'+u.userid+'">'+
-				'<h4>Level: ' + u.level+'</h4><input type="button" value="Following '+u.following+'" onClick="showFollowing(\''+u.userid+'\', '+u.following+')">'+
-				'<input type="button" value="'+u.fans+' Fans" onClick="showFans(\''+u.userid+'\', '+u.following+')">';
+		var h=	'<img src="'+u.usericon+'" class="avatar" onerror="this.src=\'images/blank.png\'"><br><h3 class="name">'+u.username+'</h3><label>User ID:</label><input type="text" id="uid" value="'+u.userid+'" disabled="disabled">'+
+				'<h4>Level: ' + u.level+'</h4><input type="button" value="Following '+u.following+'" onClick="showFollowing(\''+u.userid+'\', '+u.following+', \''+u.username+'\')">'+
+				'<input type="button" value="'+u.fans+' Fans" onClick="showFans(\''+u.userid+'\', '+u.following+', \''+u.username+'\')"><input type="hidden" id="sex" value="'+u.sex+'">';
 		$('#userinfo').html(h);
 	}
 
 	if (e.videos === undefined) {
-		$('#videolist').html('<div class="emptylist">No viden entries for this user account found.</div>');
+		$('#videolist').html('<div class="emptylist">No videos entries for this user account found.</div>');
 		return;
 	}
 
 	if (e.videos.length == 0) {
-		$('#videolist').html('<div class="emptylist">No viden entries for this user account found.</div>');
+		$('#videolist').html('<div class="emptylist">No videos entries for this user account found.</div>');
 		return;
 	}
 
 	for(i = 0; i < e.videos.length; i++) {
 		if (e.videos[i].url.length > 8) {
+
+			var dt = new Date(e.videos[i].dt * 1000);
+			var ds = (dt.getMonth() + 1) + '-' + dt.getDate() + '-' + dt.getFullYear() + ' ' + (dt.getHours() < 10 ? '0' : '') + dt.getHours() + ':' + (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
 			var hi1 = $('#type').val() == 'url-lookup' ? ($('#query').val() == e.videos[i].url ? true : false) : false;
 			var hi2 = $('#type').val() == 'video-lookup' ? ($('#query').val() == e.videos[i].videoid ? true : false) : false;
 
@@ -196,17 +198,19 @@ function renderUserLookup(e) {
 			var length = lm + ':' + (ls < 10 ? '0' : '') + ls;
 
 			var h = '<div class="video_entry '+(hi1 ? 'highlight ' : '')+(hi2 ? 'highlight ' : '')+'">';
-			h += '<input class="url" type="text" value="'+e.videos[i].url+'"><h4 class="title"><span>'+e.videos[i].dt+'</span>'+(e.videos[i].private==true ? '[DELETED] ':'')+e.videos[i].title+'</h4>';
+			h += '<a class="url" href="'+e.videos[i].url+'">'+e.videos[i].url+'</a><h4 class="date">'+ds+'</h4><h4 class="title">'+(e.videos[i].private==true ? '[DELETED] ':'')+e.videos[i].title+'</h4>';
 			h += '<div class="counts"><label>Length:</label><span>'+length+'</span><label>Views:</label><span>' + e.videos[i].plays + '</span><label>Likes:</label><span>' + e.videos[i].likes + '</span><label>Shares:</label><span>' + e.videos[i].shares + '</span><label>Country:</label><span>'+e.videos[i].location.country+'</span></div>';
-			h += '<img class="watch" src="images/ic_play_circle_outline_white_24px.svg" onClick="playVideo(\''+e.videos[i].url+'\')">';
 			h += '</div>';
 			$('#videolist').append(h);
 		}
 	}
+
 }
 
 function renderSearchResults(e) {
 	$('#main').html('<div id="userlist"></div>');
+
+	console.log('Got ' + e.length + ' results');
 
 	if (e.length < 1) {
 		$('#main').html('<div class="emptylist">No users were found on LiveMe.</div>');
@@ -215,31 +219,30 @@ function renderSearchResults(e) {
 
 	for(i = 0; i < e.length; i++) {
 		if (e[i].userid > 0) {
-
-			//var h = '<div class="user_entry '+e[i].sex+'"><img class="avatar" src="'+e[i].thumb+'"><h4>'+e[i].nickname+'</h4><div class="userid">UserID: <input type="text" value="'+e[i].userid+'"></div><div class="level">Level: <span>'+e[i].level+'</span></div>';
-
 			var h = '<div class="user_entry '+e[i].sex+'"><img class="avatar" src="'+e[i].thumb+'"><h4>'+e[i].nickname+'</h4><div class="userid">UserID:</div><div class="level">Level: <span>'+e[i].level+'</span></div>';
 			h += '<input type="button" class="fans" value="'+e[i].fans+' Fans" onClick="showFans(\''+e[i].userid+'\', '+e[i].fans+', \''+e[i].nickname+'\')">';
 			h += '<input type="button" class="followings" value="Following '+e[i].followings+'" onClick="showFollowing(\''+e[i].userid+'\', '+e[i].followings+', \''+e[i].nickname+'\')">';
 			h += '<input type="button" class="user" value="'+e[i].userid+'" onClick="showUser(\''+e[i].userid+'\')">';
 
-
 			if (e[i].videos.length > 0) {
-				h += '<input type="button" value="'+e[i].videos.length+( e[i].videosplus == true ? '+' : '')+' Videos" onClick="$(\'.vl-'+e[i].userid+'\').toggle()"></div><div class="video_list vl-'+e[i].userid+'">';
+				h += '<input type="button" class="videos" value="'+e[i].videos.length+( e[i].videosplus == true ? '+' : '')+' Videos" onClick="$(\'.vl-'+e[i].userid+'\').toggle()"></div><div class="video_list vl-'+e[i].userid+'">';
 
 				if (e[i].videosplus == true) {
-					h += '<h4 style="text-align: center;">First 20 videos listed only!</h4>';
+					h += '<h4 style="text-align: center;">First 10 videos listed only!</h4>';
 				}
 
 				for(j = 0; j < e[i].videos.length; j++) {
 					if (e[i].videos[j].url.length > 8) {
+						var dt = new Date(e[i].videos[j].dt * 1000);
+						var ds = (dt.getMonth() + 1) + '-' + dt.getDate() + '-' + dt.getFullYear() + ' ' + (dt.getHours() < 10 ? '0' : '') + dt.getHours() + ':' + (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
+
 						var ls = (e[i].videos[j].length - Math.round(e[i].videos[j].length / 60)) % 60, lm = Math.round(e[i].videos[j].length / 60);
 						var length = lm + ':' + (ls < 10 ? '0' : '') + ls;
 
 						var hh = '<div class="video_entry">';
-						hh += '<input class="url" type="text" value="'+e[i].videos[j].url+'"><h4 class="title">'+(e[i].videos[j].private==true ? '[DELETED] ':'')+e[i].videos[j].title+'</h4>';
+						hh += '<a class="url" href="'+e[i].videos[j].url+'">'+e[i].videos[j].url+'</a><h4 class="date">'+ds+'</h4><h4 class="title">'+(e[i].videos[j].private==true ? '[DELETED] ':'')+e[i].videos[j].title+'</h4>';
+
 						hh += '<div class="counts"><label>Length:</label><span>'+length+'</span><label>Views:</label><span>' + e[i].videos[j].plays + '</span><label>Likes:</label><span>' + e[i].videos[j].likes + '</span><label>Shares:</label><span>' + e[i].videos[j].shares + '</span><label>Country:</label><span>'+e[i].videos[j].location.country+'</span></div>';
-						hh += '<img class="watch" src="images/ic_play_circle_outline_white_24px.svg" onClick="playVideo(\''+e[i].videos[j].url+'\')">';
 						hh += '</div>';
 						
 						h += hh;
@@ -253,7 +256,5 @@ function renderSearchResults(e) {
 		}
 	}
 }
-
-
 
 
