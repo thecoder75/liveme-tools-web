@@ -4,12 +4,11 @@ This is a web-page based version of the LiveMe Tools for use on older computers 
 
 This does NOT have a video player interface or download interface, you MUST use a plugin or 3rd party software for those features.
 
-Development is discussed on [TheCoder's Discord Server](https://discord.gg/A5p2aF4) along with 
-feedback from users.
+If you find an issue, or would like to discuss an enhancement, please create an Issue Ticket.
 
 ## Getting Started
 
-Just download this script to your computer and run the included html page.
+Just download and extract a [release](releases/latest) to your computer and open ```index.html``` page.
 
 ## Authors
 
