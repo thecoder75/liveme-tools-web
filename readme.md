@@ -8,7 +8,7 @@ If you find an issue, or would like to discuss an enhancement, please create an 
 
 ## Getting Started
 
-Just download and extract a [release](releases/latest) to your computer and open ```index.html``` page.
+Just download and extract a [release](https://github.com/thecoder75/liveme-tools-web/releases/latest) to your computer and open ```index.html``` page.
 
 ## Authors
 
