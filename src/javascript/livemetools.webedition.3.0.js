@@ -12,7 +12,6 @@ var isSearching = false;
 
 $(function(){
 	setTimeout(function(){ onTypeChange(); }, 50);
-	//window.onbeforeunload = function(e) { e.preventDefault();  return false; }; 
 });
 
 function enterOnSearch(e) { if (e.keyCode == 13) beginSearch(); } 
@@ -142,9 +141,6 @@ function beginSearch2() {
 			$('#overlay').hide();
 		});
 	}	
-
-
-
 }
 
 function showFollowing(u,m) {
@@ -172,19 +168,24 @@ function renderUserLookup(e) {
 	if (e.userinfo.userid > 0) {
 		var u = e.userinfo;
 		userID = u.userid;
-		var h=	'<img src="'+u.usericon+'" class="avatar" onerror="this.src=\'images/blank.png\'"><br><h3 class="name">'+u.username+'</h3><label>User ID:</label><input type="text" id="uid" value="'+u.userid+'" disabled="disabled">'+
-				'<h4>Level: ' + u.level+'</h4><input type="button" value="Following '+u.following+'" onClick="showFollowing(\''+u.userid+'\', '+u.following+', \''+u.username+'\')">'+
-				'<input type="button" value="'+u.fans+' Fans" onClick="showFans(\''+u.userid+'\', '+u.following+', \''+u.username+'\')"><input type="hidden" id="sex" value="'+u.sex+'">';
-		$('#userinfo').html(h);
+		$('#userinfo').html(`
+				<img src="${u.usericon}" class="avatar" onError="this.src='images/blank.png"><br>
+				<h3 class="name">${u.username}</h3>
+				<label><input type="text" id="uid" value="${u.userid}" disabled="disabled">
+				<h4>Level: ${u.level}</h4>
+				<input type="button" value="Following ${u.following}" onClick="showFollowing('${u.userid}', ${u.following}, '${u.username}')">
+				<input type="button" value="${u.fans} Fans" onCLick="showFans('${u.userid}', ${u.fans}, '${u.username}')">
+				<input type="hidden" id="sex" value="${u.sex}">
+		`);
 	}
 
 	if (e.videos === undefined) {
-		$('#videolist').html('<div class="emptylist">No videos entries for this user account found.</div>');
+		$('#videolist').html('<div class="emptylist">No videos for this user account found.</div>');
 		return;
 	}
 
 	if (e.videos.length == 0) {
-		$('#videolist').html('<div class="emptylist">No videos entries for this user account found.</div>');
+		$('#videolist').html('<div class="emptylist">No videos for this user account found.</div>');
 		return;
 	}
 
@@ -197,13 +198,22 @@ function renderUserLookup(e) {
 			var hi2 = $('#type').val() == 'video-lookup' ? ($('#query').val() == e.videos[i].videoid ? true : false) : false;
 
 			var ls = (e.videos[i].length - Math.round(e.videos[i].length / 60)) % 60, lm = Math.round(e.videos[i].length / 60);
-			var length = lm + ':' + (ls < 10 ? '0' : '') + ls;
+			var length = lm + ':' + (ls < 10 ? '0' : '') + ls, highlight = hi1 || hi2 ? 'highlight' : '', deleted = e.videos[i].private ? '[DELETED]':'';
 
-			var h = '<div class="video_entry '+(hi1 ? 'highlight ' : '')+(hi2 ? 'highlight ' : '')+'">';
-			h += '<a class="url" href="'+e.videos[i].url+'">'+e.videos[i].url+'</a><h4 class="date">'+ds+'</h4><h4 class="title">'+(e.videos[i].private==true ? '[DELETED] ':'')+e.videos[i].title+'</h4>';
-			h += '<div class="counts"><label>Length:</label><span>'+length+'</span><label>Views:</label><span>' + e.videos[i].plays + '</span><label>Likes:</label><span>' + e.videos[i].likes + '</span><label>Shares:</label><span>' + e.videos[i].shares + '</span><label>Country:</label><span>'+e.videos[i].location.country+'</span></div>';
-			h += '</div>';
-			$('#videolist').append(h);
+			$('#videolist').append(`
+				<div class="video_entry "${highlight}">
+					<a class="url" href="${e.videos[i].url}">${e.videos[i].url}</a>
+					<h4 class="date">${ds}</h4>
+					<h4 class="title">${deleted}${e.videos[i].title}</h4>
+					<div class="counts">
+						<label>Length:</label><span>${length}</span>
+						<label>Views:</label><span>${e.videos[i].plays}</span>
+						<label>Likes:</label><span>${e.videos[i].likes}</span>
+						<label>Shares:</label><span>${e.videos[i].shares}</span>
+						<label>Country:</label><span>${e.videos[i].location.country}</span>
+					</div>
+				</div>
+			`);
 		}
 	}
 
@@ -212,8 +222,6 @@ function renderUserLookup(e) {
 function renderSearchResults(e) {
 	$('#main').html('<div id="userlist"></div>');
 
-	console.log('Got ' + e.length + ' results');
-
 	if (e.length < 1) {
 		$('#main').html('<div class="emptylist">No users were found on LiveMe.</div>');
 		return;
@@ -221,40 +229,17 @@ function renderSearchResults(e) {
 
 	for(i = 0; i < e.length; i++) {
 		if (e[i].userid > 0) {
-			var h = '<div class="user_entry '+e[i].sex+'"><img class="avatar" src="'+e[i].thumb+'"><h4>'+e[i].nickname+'</h4><div class="userid">UserID:</div><div class="level">Level: <span>'+e[i].level+'</span></div>';
-			h += '<input type="button" class="fans" value="'+e[i].fans+' Fans" onClick="showFans(\''+e[i].userid+'\', '+e[i].fans+', \''+e[i].nickname+'\')">';
-			h += '<input type="button" class="followings" value="Following '+e[i].followings+'" onClick="showFollowing(\''+e[i].userid+'\', '+e[i].followings+', \''+e[i].nickname+'\')">';
-			h += '<input type="button" class="user" value="'+e[i].userid+'" onClick="showUser(\''+e[i].userid+'\')">';
-
-			if (e[i].videos.length > 0) {
-				h += '<input type="button" class="videos" value="'+e[i].videos.length+( e[i].videosplus == true ? '+' : '')+' Videos" onClick="$(\'.vl-'+e[i].userid+'\').toggle()"></div><div class="video_list vl-'+e[i].userid+'">';
-
-				if (e[i].videosplus == true) {
-					h += '<h4 style="text-align: center;">First 10 videos listed only!</h4>';
-				}
-
-				for(j = 0; j < e[i].videos.length; j++) {
-					if (e[i].videos[j].url.length > 8) {
-						var dt = new Date(e[i].videos[j].dt * 1000);
-						var ds = (dt.getMonth() + 1) + '-' + dt.getDate() + '-' + dt.getFullYear() + ' ' + (dt.getHours() < 10 ? '0' : '') + dt.getHours() + ':' + (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
-
-						var ls = (e[i].videos[j].length - Math.round(e[i].videos[j].length / 60)) % 60, lm = Math.round(e[i].videos[j].length / 60);
-						var length = lm + ':' + (ls < 10 ? '0' : '') + ls;
-
-						var hh = '<div class="video_entry">';
-						hh += '<a class="url" href="'+e[i].videos[j].url+'">'+e[i].videos[j].url+'</a><h4 class="date">'+ds+'</h4><h4 class="title">'+(e[i].videos[j].private==true ? '[DELETED] ':'')+e[i].videos[j].title+'</h4>';
-
-						hh += '<div class="counts"><label>Length:</label><span>'+length+'</span><label>Views:</label><span>' + e[i].videos[j].plays + '</span><label>Likes:</label><span>' + e[i].videos[j].likes + '</span><label>Shares:</label><span>' + e[i].videos[j].shares + '</span><label>Country:</label><span>'+e[i].videos[j].location.country+'</span></div>';
-						hh += '</div>';
-						
-						h += hh;
-					}
-				}
-
-				h += '</div>';
-			}
-
-			$('#userlist').append(h);
+			$('#userlist').append(`
+				<div class="user_entry ${e[i].sex}">
+					<img class="avatar" src="${e[i].thumb}">
+					<h4>${e[i].nickname}</h4>
+					<div class="userid">
+					<div class="level">Level: <span>${e[i].level}</span></div>
+					<input type="button" class="fans" value="${e[i].fans} Fans" onClick="showFans('${e[i].userid}', ${e[i].fans}, '${e[i].nickname}')">';
+					<input type="button" class="followings" value="Following ${e[i].followings}" onClick="showFollowing('${e[i].userid}', ${e[i].followings}, '${e[i].nickname}')">';
+					<input type="button" class="user" value="${e[i].userid}" onClick="showUser('${e[i].userid}')">';
+				</div>
+			`);
 		}
 	}
 }
