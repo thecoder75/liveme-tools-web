@@ -7,8 +7,6 @@
 	 | |____| |\ V /  __/ |  | |  __/    | | (_) | (_) | \__ \
 	 |______|_| \_/ \___|_|  |_|\___|    |_|\___/ \___/|_|___/
 
-
-		  See main readme.md for details on this project.
 		  
 */
 var	callback_holder = null, query = '', query_orig = '', page_index = 0, return_data = [], index = 0, max_count = 0;
