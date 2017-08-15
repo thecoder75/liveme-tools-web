@@ -70,8 +70,6 @@ function beginSearch2() {
 
 
 	var u=$('#query').val(), isnum = /^\d+$/.test(u);
-
-	
 	if ($('#type').val() == 'url-lookup') {
 		var q = '', u=$('#query').val(), t=u.split('/');
 
@@ -81,6 +79,7 @@ function beginSearch2() {
 			setTimeout(function(){
 				beginSearch2();
 			}, 100);
+
 		} else if (t[t.length-1].indexOf('yolo') > -1) {
 			var a=t[t.length - 1].split('-');
 			$('#type').val('video-lookup');
@@ -89,15 +88,34 @@ function beginSearch2() {
 				beginSearch2();
 			}, 100);
 			
-		} else if (t[t.length-1].indexOf('/liveme/') > -1) {
-			var a=t[t.length - 1].split('.');
-			q = a[0];
-		} else if (t[t.length - 1].indexOf('videoid') > -1) {
+		} else if (u.indexOf('videoid') > -1) {
 			var a=t[t.length - 1].split('?'),b=a[1].split('&');
+			console.log(a);
 			for (i = 0; i < b.length; i++) {
 				if (b[i].indexOf('videoid') > -1) {
 					var c=b[i].split('=');
-					q = c[1];
+					
+					$('#type').val('video-lookup');
+					$('#query').val(c[1]);
+					setTimeout(function(){
+						beginSearch2();
+					}, 100);
+
+				}
+			}
+		} else if (u.indexOf('userid') > -1) {
+			var a=t[t.length - 1].split('?'),b=a[1].split('&');
+			console.log(a);
+			for (i = 0; i < b.length; i++) {
+				if (b[i].indexOf('userid') > -1) {
+					var c=b[i].split('=');
+					
+					$('#type').val('user-lookup');
+					$('#query').val(c[1]);
+					setTimeout(function(){
+						beginSearch2();
+					}, 100);
+
 				}
 			}
 		} else {
@@ -106,7 +124,7 @@ function beginSearch2() {
 
 		isSearching = false;
 		$('#overlay').hide();
-		return;
+		
 	}
 
 	if ($('#type').val() == 'search') {
