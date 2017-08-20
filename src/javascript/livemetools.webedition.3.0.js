@@ -26,6 +26,11 @@ function onTypeChange() {
 	}
 }
 
+function userSearch(id) { 
+	$('#query').val(id);
+	$('#type').val('user-lookup');
+	beginSearch2();
+}
 
 function beginSearch() {
 	if (isSearching) { return; }

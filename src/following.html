@@ -24,7 +24,7 @@
 			        success: function(e) {
 			            if (e.data.length > 0) {
 			                for (i = 0; i < e.data.length; i++) {
-			                    var t = '<div class="user_entry small  ' + (0 == e.data[i].sex ? "female" : "male") + '"><img class="avatar" src="' + e.data[i].face + '" onerror="this.src=\'images/blank.png\'"><h4><span>' + e.data[i].uid + '</span> - ' + e.data[i].nickname + '</h4></div>';
+			                    var t = '<div class="user_entry clickable small  ' + (0 == e.data[i].sex ? "female" : "male") + '" onClick="search('+e.data[i].uid+')"><img class="avatar" src="' + e.data[i].face + '" onerror="this.src=\'images/blank.png\'"><h4><span>' + e.data[i].uid + '</span> - ' + e.data[i].nickname + '</h4></div>';
 			                    $("#small_user_list").append(t);
 			                }
 			                
@@ -49,6 +49,8 @@
 			        doFetch()
 			    }, 20)
 			});
+
+			function search(i) { opener.userSearch(i); }
 		</script>
 		<style>
 			#small_user_list { top: 0px; }
