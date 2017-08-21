@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+	<head>
+
+		<script>
+			if (typeof module === 'object') {window.module = module; module = undefined;} 
+		</script>
+
+		<script type="text/javascript" src="javascript/jquery-2.1.3.min.js"></script>
+		<script type="text/javascript" src="javascript/hls.js"></script>
+
+		<style>
+			body { background-color: #000 !important; }
+			#video { background-color: #000 !important; }
+		</style>
+
+		<script>
+			const { remote, BrowserWindow } = require('electron'), ipc = require('electron').ipcRenderer;
+			$(function(){
+				var t=window.location.href.split('#'), u=t[1];
+
+				var video = document.getElementById('video');
+				var hls = new Hls();
+				
+				hls.loadSource(u);
+				hls.attachMedia(video);
+
+				hls.on(Hls.Events.MANIFEST_PARSED,function() {
+					video.play();
+				});
+	
+				video.addEventListener('loadeddata', function() {
+						$('#video').show();
+				}, false);
+
+
+			});
+			function hidePlayer() { $('#video').trigger('pause'); ipc.send('hide-player'); }
+		</script>
+
+        <link rel="stylesheet" href="style/style.css">
+
+	</head>
+	<body>
+		<header class="small transparent">
+			<h4>Player</h4>
+			<img class="close-icon" src="images/ic_close_white_24px.svg" onClick="hidePlayer()">
+		</header>
+		<video id="video" controls autoplay></video>
+
+	</body>
+</html>
