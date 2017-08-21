@@ -168,10 +168,16 @@ function openChat(u, t) {
 	debounced = true;
 	setTimeout(function(){ debounced = false; }, 500);
 
-	window.open('chat.html#'+t+'#'+u, '_message_history_' + u, 'width=360,height=720,resizable=no');
-	//ipcRenderer.send('open-chat', { url: u, startTime: t });
+	window.open('chat.html#'+t+'#'+u, '_message_history_' + u, 'width=360,height=720,resizable=no');	
 }
 
+function playVideo(u) {
+	if (debounced) return;
+	debounced = true;
+	setTimeout(function(){ debounced = false; }, 500);
+
+	window.open('player.html#'+u, '_player_'+u, 'width=368,height=640,resizable=yes');
+}
 
 function renderUserLookup(e) {
 
