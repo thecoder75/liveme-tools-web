@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Message History</title>
+		<script>
+			if (typeof module === 'object') {window.module = module; module = undefined;} 
+		</script>
+		<link rel="stylesheet" href="style/style.css">
+		<script src="javascript/jquery-2.2.4.min.js"></script>
+		<script src="javascript/livemetools.magic.js"></script>
+		<script>
+            function closeApp() {
+                window.close();
+            }
+
+			$(function(){
+                var t = window.location.href.split('#'), starTime = parseInt(t[1]) * 1000;
+                var addedEntries = 0;
+
+                getChat(t[2], function(messages) {
+
+                    if (!messages) {
+                        $('#message_history').append('<span class="emptylist">Failed to load chat message history.</span>');
+                    } else if (messages.length == 0) {
+                        $('#message_history').append('<span class="emptylist">No chat message history found.</span>');
+                    } else {
+                        for (var i = 0; i < messages.length; i++) {
+                            var message = messages[i];
+                            // Server stores time in UTC so we need to calculate from there to display correct offsets
+                            var timeOffset = new Date(parseInt(message.timestamp) - startTime), hh = timeOffset.getUTCHours(), mm = timeOffset.getUTCMinutes(), ss = timeOffset.getUTCSeconds();
+                            var t = (hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm+':'+(ss<10?'0':'')+ss;
+
+                            if (message.objectName == "app:joinchatroommsgcontent") {
+                                //$('#message_history').append('<div class="chat_joinmsg"><span class="time">[' + message.timestamp + ']</span><span class="author">' + message.content.user.name + '</span><span class="message">joined the room</span></div>');
+                            } else if (message.objectName == "app:praisemsgcontent") {
+                                //$('#message_history').append('<div class="chat_praisemsg"><span class="time">[' + message.timestamp + ']</span><span class="author">' + message.content.name + '</span> praised the broadcaster (+<span class="message">' + message.content.count + '</span>)</div>');
+                            } else if (message.objectName == "RC:TxtMsg") {
+                                $('#message_history').append('<div class="message"><div class="time">' + t + '</div><div class="author">' + message.content.user.name + '</div><div class="content">' + message.content.content + '</div></div>');
+                                addedEntries++;
+                            }
+                        }
+                    }
+
+                    if (addedEntries == 0) {
+                        $('#message_history').append('<span class="emptylist">No message history available.</span>');
+                    }
+                });
+            });
+			
+		</script>
+	</head>
+	<body>
+		<header class="small">
+			<h4>Message History</h4>
+			<img class="close-icon" src="images/ic_close_white_24px.svg" onClick="closeApp()">
+		</header>
+		<div id="message_history"></div>
+	</body>
+</html>
