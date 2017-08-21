@@ -234,7 +234,6 @@ function renderUserLookup(e) {
 					<h4 class="date">${ds}</h4>
 					<h4 class="title">${deleted}${e.videos[i].title}</h4>
 					<img class="chat" src="images/ic_chat_white_24px.svg" onClick="openChat('${e.videos[i].msgfile}', '${e.videos[i].dt}')" title="View Message History">
-					<img class="watch" src="images/ic_play_circle_outline_white_24px.svg" onClick="playVideo('${e.videos[i].url}')" title="Play Video">
 					<div class="counts">
 						<label>Length:</label><span>${length}</span>
 						<label>Views:</label><span>${e.videos[i].plays}</span>

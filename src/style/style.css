@@ -472,7 +472,7 @@ body:hover > header.small.transparent > * {
 	border: solid 1px rgba(255,255,255,0.2);
 }
 
-.video_entry .watch, .video_entry .chat {
+.video_entry .chat {
 	position: absolute;
 	top: 24px;
 	display: block;
@@ -484,12 +484,11 @@ body:hover > header.small.transparent > * {
 	padding: 4px;
 	opacity: 0.4;
 }
-.video_entry .watch:hover, .video_entry .chat:hover {
+.video_entry .chat:hover {
 	background-color: rgba(0,0,0,0.3);
 	opacity: 0.8;
 }
 
-.video_entry .watch { right: 10px; }
 .video_entry .chat { right: 58px; }
 
 
