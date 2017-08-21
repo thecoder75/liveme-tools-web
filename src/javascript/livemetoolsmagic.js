@@ -322,3 +322,39 @@ function _dosearch2() {
 	});
 }
 
+
+
+/* 
+	Chat stuff 
+*/
+function getChat(u, cb) {
+	callback_holder = cb;
+	
+	$.ajax({
+		url: u,
+		cache: false,
+		type: "GET",
+		dataType: "text",
+		timeout: 15000,
+		error: function(e) {
+			callback_holder(false);
+		},
+		success: function(e) {
+			var messageList = [];
+			var split = e.split('\n');
+
+			for (var i = 0; i < split.length; i++) {
+				try {
+					var lineObj = JSON.parse(split[i]);
+					messageList.push(lineObj);
+				} catch (er) {
+					// just ignore it, sometimes it returns malformed json
+				}
+			}
+
+			callback_holder(messageList);
+		}
+	});
+}
+
+
