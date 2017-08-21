@@ -8,7 +8,7 @@
 
 
 */
-var isSearching = false;
+var isSearching = false, debounced = false;
 
 $(function(){
 	setTimeout(function(){ onTypeChange(); }, 50);
@@ -149,12 +149,29 @@ function beginSearch2() {
 }
 
 function showFollowing(u,m) {
+	if (debounced) return;
+	debounced = true;
+	setTimeout(function(){ debounced = false; }, 500);
 	window.open('following.html?'+u+'#'+m,'_followings_'+u,'width=360,height=640,resizable=no');
 }
 
 function showFans(u,m) {
+	if (debounced) return;
+	debounced = true;
+	setTimeout(function(){ debounced = false; }, 500);
 	window.open('fans.html?'+u+'#'+m,'_fans_'+u,'width=360,height=640,resizable=no');
 }
+
+
+function openChat(u, t) {
+	if (debounced) return;
+	debounced = true;
+	setTimeout(function(){ debounced = false; }, 500);
+
+	window.open('chat.html#'+t+'#'+u, '_message_history_' + u, 'width=360,height=720,resizable=no');
+	//ipcRenderer.send('open-chat', { url: u, startTime: t });
+}
+
 
 function renderUserLookup(e) {
 
@@ -210,6 +227,8 @@ function renderUserLookup(e) {
 					<a class="url" href="${e.videos[i].url}">${e.videos[i].url}</a>
 					<h4 class="date">${ds}</h4>
 					<h4 class="title">${deleted}${e.videos[i].title}</h4>
+					<img class="chat" src="images/ic_chat_white_24px.svg" onClick="openChat('${e.videos[i].msgfile}', '${e.videos[i].dt}')" title="View Message History">
+					<img class="watch" src="images/ic_play_circle_outline_white_24px.svg" onClick="playVideo('${e.videos[i].url}')" title="Play Video">
 					<div class="counts">
 						<label>Length:</label><span>${length}</span>
 						<label>Views:</label><span>${e.videos[i].plays}</span>
@@ -248,5 +267,6 @@ function renderSearchResults(e) {
 		}
 	}
 }
+
 
 
