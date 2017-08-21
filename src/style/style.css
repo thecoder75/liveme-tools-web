@@ -495,26 +495,6 @@ body:hover > header.small.transparent > * {
 
 .video_entry.highlight > .url { color: rgb(255,255,80); }
 
-.video_entry .watch, .video_entry .download {
-	position: absolute;
-	top: 24px;
-	display: block;
-	width: 32px;
-	height: 32px;
-	border-radius: 16px;
-	background-color: rgba(0,0,0,0.2);
-	cursor: pointer;
-	padding: 4px;
-	opacity: 0.4;
-}
-.video_entry .watch:hover, .video_entry .download:hover {
-	background-color: rgba(0,0,0,0.3);
-	opacity: 0.8;
-}
-
-.video_entry .watch { right: 58px; }
-.video_entry .download { right: 10px; }
-
 .video_entry .counts {
 	position: absolute;
 	top: 35px;
