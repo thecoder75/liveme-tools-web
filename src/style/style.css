@@ -328,6 +328,50 @@ body:hover > header.small.transparent > * {
 	overflow-y: scroll;
 }
 
+
+
+
+.message {
+	display: block;
+	padding: 4px;
+	margin: 8px;
+	background-color: #595b5b;
+	border-radius: 8px;
+	position: relative;
+}
+
+.message .author {
+	position: absolute;
+	top: 2px;
+	left: 8px;
+	font-size: 9pt;
+	font-weight: 600;
+	color: rgba(255,255,255,0.4);
+}
+.message .time {
+	position: absolute;
+	top: 2px;
+	right: 8px;
+	z-index: 2;
+	font-size: 9pt;
+	font-weight: 600;
+	line-height: 16px;
+	color: rgba(255,255,255,0.4);
+}
+.message .content {
+	display: block;
+	font-size: 12pt;
+	font-weight: 400;
+	vertical-align: top;
+	color: rgba(255,255,255,0.7);
+	padding: 24px 16px 8px;
+}
+.message.highlight { background-color: rgba(255,224,0,0.15); }
+
+
+
+
+
 .user_entry {
 	display: block;
 	height: 100px;
@@ -385,10 +429,8 @@ body:hover > header.small.transparent > * {
 	color: #eaebed;
 }
 .user_entry input[type=button].user { position: absolute; top: 35px; left: 260px; width: 140px; }
-
-.user_entry input[type=button].videos { position: absolute; top: 35px; right: 40px; width: 100px; }
-.user_entry input[type=button].fans { position: absolute; top: 35px; right: 160px; width: 100px; }
-.user_entry input[type=button].followings { position: absolute; top: 35px; right: 280px; width: 100px; }
+.user_entry input[type=button].fans { position: absolute; top: 35px; right: 24px; width: 100px; }
+.user_entry input[type=button].followings { position: absolute; top: 35px; right: 160px; width: 100px; }
 
 .user_entry.small {
 	height: 60px;
