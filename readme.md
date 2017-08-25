@@ -9,9 +9,7 @@
 - See the Fans and Followings of a user.
 
 ## What's Missing
-- No video player is bundled with this version.
-- Reduced features of Fans and Followings Lists
-	- Does not support clicking to trigger search in main window.  (This was removed to provide greater browser compatibility and device support.)
+- No video player is bundled with this version.  You can install a HLS compatible player for most browsers or use 3rd-party software to play the videos.
 
 ## Reporting Issues
 
