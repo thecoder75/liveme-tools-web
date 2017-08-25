@@ -164,11 +164,14 @@ function showFans(u,m) {
 
 
 function openChat(u, t, a) {
+	alert('Disabled due to Cross Browser restriction from LiveMe - bastards.');
+	/*
 	if (debounced) return;
 	debounced = true;
 	setTimeout(function(){ debounced = false; }, 500);
 
 	window.open('chat.html#'+t+'#'+u+'#'+a, '_message_history_' + u, 'width=360,height=720,resizable=no');	
+	*/
 }
 
 
@@ -226,7 +229,7 @@ function renderUserLookup(e) {
 					<a class="url" href="${e.videos[i].url}">${e.videos[i].url}</a>
 					<h4 class="date">${ds}</h4>
 					<h4 class="title">${deleted}${e.videos[i].title}</h4>
-					<img class="chat" src="images/ic_chat_white_24px.svg" onClick="openChat('${e.videos[i].msgfile}', '${e.videos[i].dt}', '${e.userinfo.username}')" title="View Message History">
+					<!--<img class="chat" src="images/ic_chat_white_24px.svg" onClick="openChat('${e.videos[i].msgfile}', '${e.videos[i].dt}', '${e.userinfo.username}')" title="View Message History">-->
 					<div class="counts">
 						<label>Length:</label><span>${length}</span>
 						<label>Views:</label><span>${e.videos[i].plays}</span>
