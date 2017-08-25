@@ -14,7 +14,7 @@
             }
 
 			$(function(){
-                var t = window.location.href.split('#'), starTime = parseInt(t[1]) * 1000;
+                var t = window.location.href.split('#'), starTime = parseInt(t[1]) * 1000, nickname = t[2];
                 var addedEntries = 0;
 
                 getChat(t[2], function(messages) {
@@ -35,7 +35,15 @@
                             } else if (message.objectName == "app:praisemsgcontent") {
                                 //$('#message_history').append('<div class="chat_praisemsg"><span class="time">[' + message.timestamp + ']</span><span class="author">' + message.content.name + '</span> praised the broadcaster (+<span class="message">' + message.content.count + '</span>)</div>');
                             } else if (message.objectName == "RC:TxtMsg") {
-                                $('#message_history').append('<div class="message"><div class="time">' + t + '</div><div class="author">' + message.content.user.name + '</div><div class="content">' + message.content.content + '</div></div>');
+                                var highlight = message.content.user.name == nickname ? 'highlight' : '';
+
+                                $('#message_history').append(`
+                                <div class="message ${highlight}">
+                                    <div class="time">${t}</div>
+                                    <div class="author">${message.content.user.name}</div>
+                                    <div class="content">${message.content.content}</div>
+                                </div>
+                                `);
                                 addedEntries++;
                             }
                         }
