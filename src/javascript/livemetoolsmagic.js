@@ -68,7 +68,7 @@ function _dolookup() {
 				return;
 			}
 
-			if (typeof e.data.user_info !== undefined) {
+			if (typeof e.data.user_info !== 'undefined') {
 				query = e.data.user_info.userid;
 				_dolookup1();
 			} else {
@@ -295,8 +295,6 @@ function _dosearch2() {
 		},
 		success: function(e) {
 			
-			console.log(index);
-
 			return_data[index] = {
 					userid: e.data.user.user_info.uid,
 					nickname: e.data.user.user_info.nickname,
