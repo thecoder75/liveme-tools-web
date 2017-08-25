@@ -131,13 +131,13 @@ function beginSearch2() {
 		searchkeyword($('#query').val(), function(e) {
 			isSearching = false;
 			$('#main').html('<div id="results" class="panel"></div>'); 
-			renderSearchResults(e.data);
+			renderSearchResults(e);
 			$('#overlay').hide();
 		});
 	} else {
 		getuservideos($('#query').val(), function(e){
 			isSearching = false;
-			if ((typeof(e.userinfo.userid) === undefined) || (e.userinfo.userid == 0)) {
+			if ((typeof e.userinfo.userid === undefined) || (e.userinfo.userid == 0)) {
 				$('#main').html('<div class="emptylist">Search returned nothing.</div>');
 			} else {
 				$('#main').html('<div id="userinfo" class="panel"></div><div id="videolist" class="panel"></div>'); 
@@ -163,12 +163,12 @@ function showFans(u,m) {
 }
 
 
-function openChat(u, t) {
+function openChat(u, t, a) {
 	if (debounced) return;
 	debounced = true;
 	setTimeout(function(){ debounced = false; }, 500);
 
-	window.open('chat.html#'+t+'#'+u, '_message_history_' + u, 'width=360,height=720,resizable=no');	
+	window.open('chat.html#'+t+'#'+u+'#'+a, '_message_history_' + u, 'width=360,height=720,resizable=no');	
 }
 
 
@@ -226,7 +226,7 @@ function renderUserLookup(e) {
 					<a class="url" href="${e.videos[i].url}">${e.videos[i].url}</a>
 					<h4 class="date">${ds}</h4>
 					<h4 class="title">${deleted}${e.videos[i].title}</h4>
-					<!-- <img class="chat" src="images/ic_chat_white_24px.svg" onClick="openChat('${e.videos[i].msgfile}', '${e.videos[i].dt}')" title="View Message History"> -->
+					<img class="chat" src="images/ic_chat_white_24px.svg" onClick="openChat('${e.videos[i].msgfile}', '${e.videos[i].dt}', '${e.userinfo.username}')" title="View Message History">
 					<div class="counts">
 						<label>Length:</label><span>${length}</span>
 						<label>Views:</label><span>${e.videos[i].plays}</span>
@@ -255,11 +255,10 @@ function renderSearchResults(e) {
 				<div class="user_entry ${e[i].sex}">
 					<img class="avatar" src="${e[i].thumb}">
 					<h4>${e[i].nickname}</h4>
-					<div class="userid">
 					<div class="level">Level: <span>${e[i].level}</span></div>
-					<input type="button" class="fans" value="${e[i].fans} Fans" onClick="showFans('${e[i].userid}', ${e[i].fans}, '${e[i].nickname}')">';
-					<input type="button" class="followings" value="Following ${e[i].followings}" onClick="showFollowing('${e[i].userid}', ${e[i].followings}, '${e[i].nickname}')">';
-					<input type="button" class="user" value="${e[i].userid}" onClick="showUser('${e[i].userid}')">';
+					<input type="button" class="fans" value="${e[i].fans} Fans" onClick="showFans('${e[i].userid}', ${e[i].fans}, '${e[i].nickname}')">
+					<input type="button" class="followings" value="Following ${e[i].followings}" onClick="showFollowing('${e[i].userid}', ${e[i].followings}, '${e[i].nickname}')">
+					<input type="button" class="user" value="${e[i].userid}" onClick="userSearch('${e[i].userid}')">
 				</div>
 			`);
 		}
