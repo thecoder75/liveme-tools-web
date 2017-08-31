@@ -103,13 +103,14 @@ function _dolookup1() {
 				return_data.userinfo = {
 					userid: e.data.user.user_info.uid,
 					username: e.data.user.user_info.nickname,
-					sex: e.data.user.user_info.sex == 0 ? 'female' : 'male',
+					sex: e.data.user.user_info.sex == -1 ? '' : (e.data.user.user_info.sex == 0 ? 'female' : 'male'),
 					usericon: e.data.user.user_info.face,
 					level: parseInt(e.data.user.user_info.level),
 					following: parseInt(e.data.user.count_info.following_count),
 					fans: parseInt(e.data.user.count_info.follower_count)
 				}
 			}
+			page_index = 1;
 			_dolookup2();			
 		}
 	});
@@ -124,7 +125,7 @@ function _dolookup2() {
 		url: 'http://live.ksmobile.net/live/getreplayvideos',
 		data: {
 			userid: query,
-			page_size: 20,
+			page_size: 10,
 			page_index: page_index
 		},
 		cache: false,
@@ -158,28 +159,15 @@ function _dolookup2() {
 						private: false
 					});
 				}
-			}
-
-			if (typeof e.data.video_info !== undefined) {
-				if (query_orig == null) {
-					callback_holder(return_data);
+				if (e.data.video_info.length == 10) {
+					page_index++;
+					_dolookup2();
 				} else {
 					_dolookup3();
 				}
-				return;
-			} else if (page_index < 20) {
-				if (e.data.video_info.length < 20) {
-					_dolookup3();			
-				} else {
-					page_index++;
-					_dolookup2();
-				}
-				return;
 			} else {
-				_dolookup3();
-				return;
+				do_lookup3();
 			}
-
 		}
 	});
 }
@@ -298,7 +286,7 @@ function _dosearch2() {
 			return_data[index] = {
 					userid: e.data.user.user_info.uid,
 					nickname: e.data.user.user_info.nickname,
-					sex: e.data.user.user_info.sex == 0 ? 'female' : 'male',
+					sex: e.data.user.user_info.sex == -1 ? '' : (e.data.user.user_info.sex == 0 ? 'female' : 'male'),
 					thumb: e.data.user.user_info.face,
 					level: parseInt(e.data.user.user_info.level),
 					followings: parseInt(e.data.user.count_info.following_count),
