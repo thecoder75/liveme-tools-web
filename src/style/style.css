@@ -243,6 +243,7 @@ body:hover > header.small.transparent > * {
 	width: 160px;
 	height: 160px;
 	border-radius: 80px;
+	background-color: rgba(0,0,0,0.2);
 }
 
 #userinfo label {
@@ -384,15 +385,15 @@ body:hover > header.small.transparent > * {
 	width: 100px;
 	height: 100px;
 
-	border: solid 5px #000;
 	border-radius: 50px;
 
 	position: absolute;
 	left: 0;
 	top: 0;
+	background-color: rgba(0,0,0,0.2);
 }
-.user_entry.male > .avatar { border-color: #89CFF0; }
-.user_entry.female > .avatar { border-color: #F9CCCA; }
+.user_entry.male > .avatar { border: solid 5px #89CFF0; }
+.user_entry.female > .avatar { border: solid 5px #F9CCCA; }
 
 
 .user_entry h4 {
@@ -439,6 +440,7 @@ body:hover > header.small.transparent > * {
 	left: -2px;
 	z-index: 5;
 	box-shadow: 0px 1px 3px rgba(0,0,0,0.2);
+	background-color: rgba(0,0,0,0.2);
 }
 .user_entry.small h4 {
 	top: 19px;
