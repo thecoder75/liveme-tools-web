@@ -1,7 +1,7 @@
 # LiveMe Tools Web Edition
 
 ## Notice
-** This version is limited in features and functions compared to the desktop app version!  It has been designed this way to allow for greater use on older desktop computers and mobile devices! **
+** This version is limited in features and functions compared to the desktop version and is no longer being maintained! **
 
 ## Features
 - Search the LiveMe user database quickly.
